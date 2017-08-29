@@ -38,10 +38,10 @@ const s = StyleSheet.create({
     color: "rgba(255, 255, 255, 1)",
   },
   number: {
-    fontSize: 21,
+    fontSize: 18,
     position: "absolute",
-    top: 95,
-    left: 28,
+    top: 94,
+    left: 18,
   },
   name: {
     fontSize: 16,
@@ -57,7 +57,7 @@ const s = StyleSheet.create({
     left: 218,
   },
   expiry: {
-    fontSize: 16,
+    fontSize: 12,
     position: "absolute",
     bottom: 20,
     left: 220,
@@ -74,6 +74,12 @@ const s = StyleSheet.create({
     top: 80,
     right: 30,
   },
+  cardNumberLabel: {
+    fontSize: 12,
+    position: "absolute",
+    top: 80,
+    left: 18,
+  }
 });
 
 /* eslint react/prop-types: 0 */ // https://github.com/yannickcr/eslint-plugin-react/issues/106
@@ -98,10 +104,10 @@ export default class CardView extends Component {
   static defaultProps = {
     name: "",
     placeholder: {
-      number: "•••• •••• •••• ••••",
-      name: "FULL NAME",
-      expiry: "••/••",
-      cvc: "•••",
+      number: "XXXX XXXX XXXX XXXX",
+      name: "Card Holder Name",
+      expiry: "MM/YY",
+      cvc: "XXX",
     },
 
     scale: 1,
@@ -139,6 +145,9 @@ export default class CardView extends Component {
               source={imageFront}>
               <Image style={[s.icon]}
                   source={Icons[brand]} />
+              <Text style={[s.baseText, { fontFamily }, s.cardNumberLabel, s.placeholder, focused === "number" && s.focused]}>
+                Card Number
+              </Text>
               <Text style={[s.baseText, { fontFamily }, s.number, !number && s.placeholder, focused === "number" && s.focused]}>
                 { !number ? placeholder.number : number }
               </Text>
