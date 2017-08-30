@@ -13,29 +13,45 @@ import PropTypes from "prop-types";
 import defaultIcons from "./Icons";
 import FlipCard from "react-native-flip-card";
 
-const BASE_SIZE = { width: 300, height: 190 };
+const BASE_SIZE = { width: 344, height: 188 };
 
 const s = StyleSheet.create({
   cardContainer: {},
-  cardFace: {position: 'relative'},
+  cardFaceContainer:{
+    shadowColor: '#5b8aec',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowRadius: 8,
+    shadowOpacity: 0.6,
+    borderRadius: 5
+  },
+  cardFace: {
+    position: 'relative',
+    resizeMode: 'stretch',
+    borderRadius: 5
+  },
   icon: {
     position: "absolute",
-    top: 15,
-    right: 15,
+    top: 23,
+    right: 26,
     width: 60,
     height: 40,
     resizeMode: "contain",
   },
   baseText: {
-    color: "rgba(255, 255, 255, 0.8)",
+    color: "#3c4464",
     backgroundColor: "transparent",
   },
   placeholder: {
-    color: "rgba(255, 255, 255, 0.5)",
+    color: "#a2aab1",
   },
-  focused: {
-    fontWeight: "bold",
-    color: "rgba(255, 255, 255, 1)",
+  numberLabel: {
+    fontSize: 12,
+    position: "absolute",
+    top: 80,
+    left: 18,
   },
   number: {
     fontSize: 18,
@@ -43,24 +59,29 @@ const s = StyleSheet.create({
     top: 94,
     left: 18,
   },
-  name: {
-    fontSize: 16,
-    position: "absolute",
-    bottom: 20,
-    left: 25,
-    right: 100,
-  },
-  expiryLabel: {
-    fontSize: 9,
-    position: "absolute",
-    bottom: 40,
-    left: 218,
-  },
-  expiry: {
+  nameLabel: {
     fontSize: 12,
     position: "absolute",
-    bottom: 20,
-    left: 220,
+    top: 131,
+    left: 18,
+  },
+  name: {
+    fontSize: 18,
+    position: "absolute",
+    top: 145,
+    left: 18,
+  },
+  expiryLabel: {
+    fontSize: 12,
+    position: "absolute",
+    top: 131,
+    left: 250
+  },
+  expiry: {
+    fontSize: 18,
+    position: "absolute",
+    top: 145,
+    left: 250,
   },
   amexCVC: {
     fontSize: 16,
@@ -69,16 +90,10 @@ const s = StyleSheet.create({
     right: 30,
   },
   cvc: {
-    fontSize: 16,
+    fontSize: 18,
     position: "absolute",
-    top: 80,
+    top: 100,
     right: 30,
-  },
-  cardNumberLabel: {
-    fontSize: 12,
-    position: "absolute",
-    top: 80,
-    left: 18,
   }
 });
 
@@ -95,7 +110,8 @@ export default class CardView extends Component {
     placeholder: PropTypes.object,
 
     scale: PropTypes.number,
-    fontFamily: PropTypes.string,
+    fontFamilyLabel: PropTypes.string,
+    fontFamilyField: PropTypes.string,
     imageFront: PropTypes.number,
     imageBack: PropTypes.number,
     customIcons: PropTypes.object,
@@ -107,11 +123,12 @@ export default class CardView extends Component {
       number: "XXXX XXXX XXXX XXXX",
       name: "Card Holder Name",
       expiry: "MM/YY",
-      cvc: "XXX",
+      cvc: "",
     },
 
     scale: 1,
-    fontFamily: Platform.select({ ios: "Courier", android: "monospace" }),
+    fontFamilyLabel: Platform.select({ ios: "Courier", android: "monospace" }),
+    fontFamilyField: Platform.select({ ios: "Courier", android: "monospace" }),
     imageFront: require("../images/card-front.png"),
     imageBack: require("../images/card-back.png"),
   };
@@ -119,7 +136,7 @@ export default class CardView extends Component {
   render() {
     const { focused,
       brand, name, number, expiry, cvc, customIcons,
-      placeholder, imageFront, imageBack, scale, fontFamily } = this.props;
+      placeholder, imageFront, imageBack, scale, fontFamilyLabel, fontFamilyField } = this.props;
 
     const Icons = { ...defaultIcons, ...customIcons };
     const isAmex = brand === "american-express";
@@ -140,35 +157,39 @@ export default class CardView extends Component {
             perspective={2000}
             clickable={false}
             flip={shouldFlip}>
-          <ImageBackground imageStyle={[BASE_SIZE, s.cardFace, transform]}
-              style={[BASE_SIZE, s.cardFace, transform]}
+          <ImageBackground
+              style={s.cardFaceContainer}
+              imageStyle={[BASE_SIZE, s.cardFace]}
               source={imageFront}>
               <Image style={[s.icon]}
                   source={Icons[brand]} />
-              <Text style={[s.baseText, { fontFamily }, s.cardNumberLabel, s.placeholder, focused === "number" && s.focused]}>
+              <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.numberLabel, s.placeholder]}>
                 Card Number
               </Text>
-              <Text style={[s.baseText, { fontFamily }, s.number, !number && s.placeholder, focused === "number" && s.focused]}>
+              <Text style={[s.baseText, { fontFamily: fontFamilyField }, s.number, !number && s.placeholder]}>
                 { !number ? placeholder.number : number }
               </Text>
-              <Text style={[s.baseText, { fontFamily }, s.name, !name && s.placeholder, focused === "name" && s.focused]}
+              <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.nameLabel, s.placeholder]}>
+                Card Holder
+              </Text>
+              <Text style={[s.baseText, { fontFamily: fontFamilyField }, s.name, !name && s.placeholder]}
                   numberOfLines={1}>
                 { !name ? placeholder.name : name.toUpperCase() }
               </Text>
-              <Text style={[s.baseText, { fontFamily }, s.expiryLabel, s.placeholder, focused === "expiry" && s.focused]}>
-                MONTH/YEAR
+              <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.expiryLabel, s.placeholder]}>
+                Expiry
               </Text>
-              <Text style={[s.baseText, { fontFamily }, s.expiry, !expiry && s.placeholder, focused === "expiry" && s.focused]}>
+              <Text style={[s.baseText, { fontFamily: fontFamilyField }, s.expiry, !expiry && s.placeholder]}>
                 { !expiry ? placeholder.expiry : expiry }
               </Text>
               { isAmex &&
-                  <Text style={[s.baseText, { fontFamily }, s.amexCVC, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
+                  <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.amexCVC, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
                     { !cvc ? placeholder.cvc : cvc }
                   </Text> }
           </ImageBackground>
           <ImageBackground
+              style={s.cardFaceContainer}
               imageStyle={[BASE_SIZE, s.cardFace, transform]}
-              style={[BASE_SIZE, s.cardFace, transform]}
               source={imageBack}>
               <Text style={[s.baseText, s.cvc, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
                 { !cvc ? placeholder.cvc : cvc }
