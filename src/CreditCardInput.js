@@ -119,7 +119,7 @@ export default class CreditCardInput extends Component {
       inputStyle, labelStyle, validColor, invalidColor, placeholderColor,
       placeholders, labels, values, status,
       onFocus, onChange, onBecomeEmpty, onBecomeValid,
-      additionalInputsProps,
+      additionalInputsProps, inputLabelContainerStyle
     } = this.props;
 
     return {
@@ -133,7 +133,7 @@ export default class CreditCardInput extends Component {
       value: values[field],
       status: status[field],
 
-      onFocus, onChange, onBecomeEmpty, onBecomeValid,
+      onFocus, onChange, onBecomeEmpty, onBecomeValid, inputLabelContainerStyle,
 
       additionalInputProps: additionalInputsProps[field],
     };
@@ -145,6 +145,7 @@ export default class CreditCardInput extends Component {
       values: { number, expiry, cvc, name, type }, focused,
       allowScroll, requiresName, requiresCVC, requiresPostalCode,
       cardScale, cardFontFamilyLabel, cardFontFamilyField, cardBrandIcons,
+      inputLabelContainerStyle
     } = this.props;
 
     return (
