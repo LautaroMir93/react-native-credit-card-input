@@ -71,7 +71,7 @@ export default class CCInput extends Component {
     const { label, value, placeholder, status, keyboardType,
             containerStyle, inputStyle, labelStyle,
             validColor, invalidColor, placeholderColor,
-            additionalInputProps, inputLabelContainerStyle } = this.props;
+            additionalInputProps, inputLabelContainerStyle, inputCustomStyle } = this.props;
     return (
       <TouchableOpacity onPress={this.focus}
           activeOpacity={0.99}>
@@ -87,6 +87,7 @@ export default class CCInput extends Component {
               style={[
                 s.baseInputStyle,
                 inputStyle,
+                inputCustomStyle,
                 ((validColor && status === "valid") ? { color: validColor } :
                  (invalidColor && status === "invalid") ? { color: invalidColor } :
                  {}),
