@@ -89,11 +89,17 @@ const s = StyleSheet.create({
     top: 73,
     right: 30,
   },
+  cvcLabel:{
+    fontSize: 12,
+    position: "absolute",
+    top: 86,
+    left: 263
+  },
   cvc: {
     fontSize: 18,
     position: "absolute",
     top: 100,
-    right: 30,
+    left: 263,
   }
 });
 
@@ -191,6 +197,9 @@ export default class CardView extends Component {
               style={s.cardFaceContainer}
               imageStyle={[BASE_SIZE, s.cardFace, transform]}
               source={imageBack}>
+              <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.cvcLabel, s.placeholder]}>
+                CCV
+              </Text>
               <Text style={[s.baseText, s.cvc, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
                 { !cvc ? placeholder.cvc : cvc }
               </Text>
