@@ -22,7 +22,7 @@ const s = StyleSheet.create({
     marginTop: 20,
   },
   inputContainer: {
-    marginLeft: 20,
+    marginLeft: 0,
   },
   inputLabel: {
     fontWeight: "bold",
@@ -32,13 +32,17 @@ const s = StyleSheet.create({
   },
 });
 
-const CVC_INPUT_WIDTH = Dimensions.get("window").width;
+const windowWidth = Dimensions.get("window").width
+
+
+const CVC_INPUT_WIDTH = windowWidth;
 const EXPIRY_INPUT_WIDTH = CVC_INPUT_WIDTH;
 const CARD_NUMBER_INPUT_WIDTH_OFFSET = 40;
-const CARD_NUMBER_INPUT_WIDTH = Dimensions.get("window").width;
+const CARD_NUMBER_INPUT_WIDTH = windowWidth;
 const NAME_INPUT_WIDTH = CARD_NUMBER_INPUT_WIDTH;
-const PREVIOUS_FIELD_OFFSET = 40;
+const PREVIOUS_FIELD_OFFSET = 0;
 const POSTAL_CODE_INPUT_WIDTH = 120;
+
 
 /* eslint react/prop-types: 0 */ // https://github.com/yannickcr/eslint-plugin-react/issues/106
 export default class CreditCardInput extends Component {
@@ -148,6 +152,8 @@ export default class CreditCardInput extends Component {
       inputLabelContainerStyle
     } = this.props;
 
+    const windowWidth = Dimensions.get("window").width
+
     return (
       <View style={s.container}>
         <CreditCard focused={focused}
@@ -169,19 +175,27 @@ export default class CreditCardInput extends Component {
             showsHorizontalScrollIndicator={false}
             style={s.form}>
           <CCInput {...this._inputProps("number")}
-              containerStyle={[s.inputContainer, inputContainerStyle, { width: CARD_NUMBER_INPUT_WIDTH }]} />
+              containerStyle={[s.inputContainer, { width: CARD_NUMBER_INPUT_WIDTH }, inputContainerStyle]}
+              inputCustomStyle={{minWidth: Dimensions.get('window').width - 50}}
+          />
           <CCInput {...this._inputProps("expiry")}
-              containerStyle={[s.inputContainer, inputContainerStyle, { width: EXPIRY_INPUT_WIDTH }]} />
+              containerStyle={[s.inputContainer, { width: EXPIRY_INPUT_WIDTH }, inputContainerStyle]}
+              inputCustomStyle={{minWidth: Dimensions.get('window').width / 3}}
+          />
           { requiresCVC &&
             <CCInput {...this._inputProps("cvc")}
-                containerStyle={[s.inputContainer, inputContainerStyle, { width: CVC_INPUT_WIDTH }]} /> }
+                containerStyle={[s.inputContainer, { width: CVC_INPUT_WIDTH }, inputContainerStyle]}
+                inputCustomStyle={{minWidth: Dimensions.get('window').width / 3}}
+          /> }
           { requiresName &&
             <CCInput {...this._inputProps("name")}
                 keyboardType="default"
-                containerStyle={[s.inputContainer, inputContainerStyle, { width: NAME_INPUT_WIDTH }]} /> }
+                containerStyle={[s.inputContainer, { width: NAME_INPUT_WIDTH }, inputContainerStyle]}
+                inputCustomStyle={{minWidth: Dimensions.get('window').width - 50}}
+            /> }
           { requiresPostalCode &&
             <CCInput {...this._inputProps("postalCode")}
-                containerStyle={[s.inputContainer, inputContainerStyle, { width: POSTAL_CODE_INPUT_WIDTH }]} /> }
+                containerStyle={[s.inputContainer, { width: POSTAL_CODE_INPUT_WIDTH }, inputContainerStyle]} /> }
         </ScrollView>
       </View>
     );
