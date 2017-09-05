@@ -143,6 +143,57 @@ export default class CreditCardInput extends Component {
     };
   };
 
+  _renderScrollView(okPressed){
+    const {
+      allowScroll,
+      inputContainerStyle,
+      requiresName,
+      requiresCVC,
+      requiresPostalCode
+    } = this.props;
+
+    if (okPressed){
+      return null
+    }
+    return (
+      <ScrollView ref="Form"
+        horizontal
+        keyboardShouldPersistTaps="always"
+        scrollEnabled={allowScroll}
+        showsHorizontalScrollIndicator={false}
+        style={s.form}>
+      <CCInput
+        {...this._inputProps("number")}
+        containerStyle={[s.inputContainer, { width: CARD_NUMBER_INPUT_WIDTH }, inputContainerStyle]}
+        inputCustomStyle={{minWidth: Dimensions.get('window').width - 50}}
+      />
+      { requiresName &&
+        <CCInput {...this._inputProps("name")}
+            keyboardType="default"
+            containerStyle={[s.inputContainer, { width: NAME_INPUT_WIDTH }, inputContainerStyle]}
+            inputCustomStyle={{minWidth: Dimensions.get('window').width - 50}}
+      /> }
+      <CCInput
+        {...this._inputProps("expiry")}
+        containerStyle={[s.inputContainer, { width: EXPIRY_INPUT_WIDTH }, inputContainerStyle]}
+        inputCustomStyle={{minWidth: Dimensions.get('window').width / 3}}
+      />
+      {
+        requiresCVC &&
+        <CCInput
+          {...this._inputProps("cvc")}
+          containerStyle={[s.inputContainer, { width: CVC_INPUT_WIDTH }, inputContainerStyle]}
+          inputCustomStyle={{minWidth: Dimensions.get('window').width / 3}}
+        />
+      }
+
+      { requiresPostalCode &&
+        <CCInput {...this._inputProps("postalCode")}
+            containerStyle={[s.inputContainer, { width: POSTAL_CODE_INPUT_WIDTH }, inputContainerStyle]} /> }
+      </ScrollView>
+    )
+  }
+
   render() {
     const {
       cardImageFront, cardImageBack, inputContainerStyle,
@@ -168,42 +219,9 @@ export default class CreditCardInput extends Component {
           number={number}
           expiry={expiry}
           cvc={cvc}
+          okPressed={this.props.okPressed}
         />
-        <ScrollView ref="Form"
-          horizontal
-          keyboardShouldPersistTaps="always"
-          scrollEnabled={allowScroll}
-          showsHorizontalScrollIndicator={false}
-          style={s.form}>
-        <CCInput
-          {...this._inputProps("number")}
-          containerStyle={[s.inputContainer, { width: CARD_NUMBER_INPUT_WIDTH }, inputContainerStyle]}
-          inputCustomStyle={{minWidth: Dimensions.get('window').width - 50}}
-        />
-        { requiresName &&
-          <CCInput {...this._inputProps("name")}
-              keyboardType="default"
-              containerStyle={[s.inputContainer, { width: NAME_INPUT_WIDTH }, inputContainerStyle]}
-              inputCustomStyle={{minWidth: Dimensions.get('window').width - 50}}
-        /> }
-        <CCInput
-          {...this._inputProps("expiry")}
-          containerStyle={[s.inputContainer, { width: EXPIRY_INPUT_WIDTH }, inputContainerStyle]}
-          inputCustomStyle={{minWidth: Dimensions.get('window').width / 3}}
-        />
-        {
-          requiresCVC &&
-          <CCInput
-            {...this._inputProps("cvc")}
-            containerStyle={[s.inputContainer, { width: CVC_INPUT_WIDTH }, inputContainerStyle]}
-            inputCustomStyle={{minWidth: Dimensions.get('window').width / 3}}
-          />
-        }
-
-        { requiresPostalCode &&
-          <CCInput {...this._inputProps("postalCode")}
-              containerStyle={[s.inputContainer, { width: POSTAL_CODE_INPUT_WIDTH }, inputContainerStyle]} /> }
-        </ScrollView>
+        { this._renderScrollView(this.props.okPressed) }
       </View>
     );
   }
