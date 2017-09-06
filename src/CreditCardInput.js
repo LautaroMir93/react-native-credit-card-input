@@ -143,7 +143,7 @@ export default class CreditCardInput extends Component {
     };
   };
 
-  _renderScrollView(okPressed){
+  _renderScrollView(showInputs){
     const {
       allowScroll,
       inputContainerStyle,
@@ -152,7 +152,7 @@ export default class CreditCardInput extends Component {
       requiresPostalCode
     } = this.props;
 
-    if (okPressed){
+    if (!showInputs){
       return null
     }
     return (
@@ -219,9 +219,9 @@ export default class CreditCardInput extends Component {
           number={number}
           expiry={expiry}
           cvc={cvc}
-          okPressed={this.props.okPressed}
+          okPressed={!this.props.showInputs}
         />
-        { this._renderScrollView(this.props.okPressed) }
+        { this._renderScrollView(this.props.showInputs) }
       </View>
     );
   }
