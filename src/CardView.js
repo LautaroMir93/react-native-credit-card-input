@@ -146,8 +146,7 @@ export default class CardView extends Component {
 
     const Icons = { ...defaultIcons, ...customIcons };
     const isAmex = brand === "american-express";
-    const shouldFlip = !isAmex && focused === "cvc";
-
+    const shouldFlip = !isAmex && focused === "cvc" && !this.props.okPressed
     const containerSize = { ...BASE_SIZE, height: BASE_SIZE.height * scale };
     const transform = { transform: [
       { scale },
