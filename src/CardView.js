@@ -25,12 +25,14 @@ const s = StyleSheet.create({
     },
     shadowRadius: 8,
     shadowOpacity: 0.6,
-    borderRadius: 5
+    borderRadius: 5,
   },
   cardFace: {
     position: 'relative',
-    resizeMode: 'stretch',
-    borderRadius: 5
+    resizeMode: 'cover',
+    borderRadius: 5,
+    borderColor: '#d0d4e6',
+    borderWidth: Platform.select({android: 1, ios: 0})
   },
   icon: {
     position: "absolute",
@@ -39,6 +41,9 @@ const s = StyleSheet.create({
     width: 60,
     height: 40,
     resizeMode: "contain",
+  },
+  flipCard:{
+    borderWidth: 0,
   },
   baseText: {
     color: "#3c4464",
@@ -147,7 +152,7 @@ export default class CardView extends Component {
     const Icons = { ...defaultIcons, ...customIcons };
     const isAmex = brand === "american-express";
     const shouldFlip = !isAmex && focused === "cvc" && !this.props.okPressed
-    const containerSize = { ...BASE_SIZE, height: BASE_SIZE.height * scale };
+    const containerSize = { ...BASE_SIZE, height: BASE_SIZE.height  * scale};
     const transform = { transform: [
       { scale },
       { translateY: ((BASE_SIZE.height * (scale - 1) / 2)) },
@@ -155,7 +160,7 @@ export default class CardView extends Component {
 
     return (
       <View style={[s.cardContainer, containerSize]}>
-        <FlipCard style={{ borderWidth: 0 }}
+        <FlipCard style={s.flipCard}
             flipHorizontal
             flipVertical={false}
             friction={10}
