@@ -200,7 +200,7 @@ export default class CreditCardInput extends Component {
       values: { number, expiry, cvc, name, type }, focused,
       allowScroll, requiresName, requiresCVC, requiresPostalCode,
       cardScale, cardFontFamilyLabel, cardFontFamilyField, cardBrandIcons,
-      inputLabelContainerStyle
+      inputLabelContainerStyle, baseTextColor, shadowColor
     } = this.props;
 
     const windowWidth = Dimensions.get("window").width
@@ -215,6 +215,8 @@ export default class CreditCardInput extends Component {
           imageFront={cardImageFront}
           imageBack={cardImageBack}
           customIcons={cardBrandIcons}
+          baseTextColor={baseTextColor}
+          shadowColor={shadowColor}
           name={requiresName ? name : " "}
           number={number}
           expiry={expiry}
