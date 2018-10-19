@@ -18,7 +18,7 @@ const BASE_SIZE = { width: 344, height: 188 };
 const s = StyleSheet.create({
   cardContainer: {},
   cardFaceContainer:{
-    shadowColor: '#5b8aec',
+    // shadowColor: '#5b8aec',
     shadowOffset: {
       width: 0,
       height: 2
@@ -46,7 +46,6 @@ const s = StyleSheet.create({
     borderWidth: 0,
   },
   baseText: {
-    color: "#3c4464",
     backgroundColor: "transparent",
   },
   placeholder: {
@@ -136,7 +135,6 @@ export default class CardView extends Component {
       expiry: "MM/YY",
       cvc: "",
     },
-
     scale: 1,
     fontFamilyLabel: Platform.select({ ios: "Courier", android: "monospace" }),
     fontFamilyField: Platform.select({ ios: "Courier", android: "monospace" }),
@@ -147,7 +145,7 @@ export default class CardView extends Component {
   render() {
     const { focused,
       brand, name, number, expiry, cvc, customIcons,
-      placeholder, imageFront, imageBack, scale, fontFamilyLabel, fontFamilyField } = this.props;
+      placeholder, imageFront, imageBack, scale, fontFamilyLabel, fontFamilyField, baseTextColor, shadowColor } = this.props;
 
     const Icons = { ...defaultIcons, ...customIcons };
     const isAmex = brand === "american-express";
@@ -168,43 +166,43 @@ export default class CardView extends Component {
             clickable={false}
             flip={shouldFlip}>
           <ImageBackground
-              style={s.cardFaceContainer}
+              style={[s.cardFaceContainer, { shadowColor }]}
               imageStyle={[BASE_SIZE, s.cardFace]}
               source={imageFront}>
               <Image style={[s.icon]}
                   source={Icons[brand]} />
-              <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.numberLabel, s.placeholder]}>
+              <Text style={[s.baseText, { color: baseTextColor, fontFamily: fontFamilyLabel }, s.numberLabel, s.placeholder]}>
                 Card Number
               </Text>
-              <Text style={[s.baseText, { fontFamily: fontFamilyField }, s.number, !number && s.placeholder]}>
+              <Text style={[s.baseText, { color: baseTextColor, fontFamily: fontFamilyField }, s.number, !number && s.placeholder]}>
                 { !number ? placeholder.number : number }
               </Text>
-              <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.nameLabel, s.placeholder]}>
+              <Text style={[s.baseText, { color: baseTextColor, fontFamily: fontFamilyLabel }, s.nameLabel, s.placeholder]}>
                 Card Holder
               </Text>
-              <Text style={[s.baseText, { fontFamily: fontFamilyField }, s.name, !name && s.placeholder]}
+              <Text style={[s.baseText, { color: baseTextColor, fontFamily: fontFamilyField }, s.name, !name && s.placeholder]}
                   numberOfLines={1}>
                 { !name ? placeholder.name : name.toUpperCase() }
               </Text>
-              <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.expiryLabel, s.placeholder]}>
+              <Text style={[s.baseText, { color: baseTextColor, fontFamily: fontFamilyLabel }, s.expiryLabel, s.placeholder]}>
                 Expiry
               </Text>
-              <Text style={[s.baseText, { fontFamily: fontFamilyField }, s.expiry, !expiry && s.placeholder]}>
+              <Text style={[s.baseText, { color: baseTextColor, fontFamily: fontFamilyField }, s.expiry, !expiry && s.placeholder]}>
                 { !expiry ? placeholder.expiry : expiry }
               </Text>
               { isAmex &&
-                  <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.amexCVC, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
+                  <Text style={[s.baseText, { color: baseTextColor, fontFamily: fontFamilyLabel }, s.amexCVC, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
                     { !cvc ? placeholder.cvc : cvc }
                   </Text> }
           </ImageBackground>
           <ImageBackground
-              style={s.cardFaceContainer}
+              style={[s.cardFaceContainer, { shadowColor }]}
               imageStyle={[BASE_SIZE, s.cardFace, transform]}
               source={imageBack}>
-              <Text style={[s.baseText, { fontFamily: fontFamilyLabel }, s.cvcLabel, s.placeholder]}>
+              <Text style={[s.baseText, { color: baseTextColor, fontFamily: fontFamilyLabel }, s.cvcLabel, s.placeholder]}>
                 CCV
               </Text>
-              <Text style={[s.baseText, s.cvc, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
+              <Text style={[s.baseText, { color: baseTextColor }, s.cvc, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
                 { !cvc ? placeholder.cvc : cvc }
               </Text>
           </ImageBackground>
